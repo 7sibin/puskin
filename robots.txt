@@ -1,0 +1,8 @@
+# robots.txt — Zlatar Stars
+# https://www.zlatarstars.rs/
+
+User-agent: *
+Allow: /
+
+# Sitemap lokacija
+Sitemap: https://www.zlatarstars.rs/sitemap.xml
