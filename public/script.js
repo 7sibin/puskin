@@ -244,7 +244,7 @@ function updatePriceCalculation() {
 }
 
 ['checkIn','checkOut','apartment'].forEach(id => {
-  document.getElementById(id)?.addEventListener('change', updatePriceCalculation);
+  document.getElementById(id)?.addEventListener('change', () => { updatePriceCalculation(); checkAvailability(); });
 });
 
 // ─── RESERVATION FORM SUBMIT ──────────────────
@@ -279,19 +279,45 @@ document.getElementById('reservationForm')?.addEventListener('submit', function(
     return;
   }
 
-  btn.disabled   = true;
+  btn.disabled = true;
   btn.classList.add('loading');
   text.textContent = 'Slanje…';
 
-  setTimeout(() => {
-    showToast('✓ Rezervacija primljena! Kontaktiraćemo vas u roku od 24h.');
-    this.reset();
-    updatePriceCalculation();
+  const body = {
+    apartment_id:     document.getElementById('apartment').value,
+    check_in:         document.getElementById('checkIn').value,
+    check_out:        document.getElementById('checkOut').value,
+    guests:           parseInt(document.getElementById('guests').value),
+    first_name:       document.getElementById('firstName').value.trim(),
+    last_name:        document.getElementById('lastName').value.trim(),
+    email:            document.getElementById('email').value.trim(),
+    phone:            document.getElementById('phone').value.trim(),
+    special_requests: document.getElementById('specialRequests')?.value.trim() || '',
+  };
+
+  fetch('/api/reservations', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.success) {
+      showToast(`✓ Rezervacija kreirana! Ref: ${data.ref_code} — Proverite email.`);
+      document.getElementById('reservationForm').reset();
+      updatePriceCalculation();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      const msg = data.errors ? data.errors.join('\n') : (data.error || 'Greška.');
+      showToast('⚠ ' + msg);
+    }
+  })
+  .catch(() => showToast('⚠ Greška konekcije. Pokušajte ponovo.'))
+  .finally(() => {
     btn.disabled = false;
     btn.classList.remove('loading');
     text.textContent = 'Potvrdi rezervaciju';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, 1800);
+  });
 });
 
 // ─── CURSOR GLOW (desktop only) ───────────────
@@ -563,3 +589,30 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// ─── AVAILABILITY CHECK ───────────────────────
+let availTimer = null;
+function checkAvailability() {
+  const aptId    = document.getElementById('apartment')?.value;
+  const checkIn  = document.getElementById('checkIn')?.value;
+  const checkOut = document.getElementById('checkOut')?.value;
+  const panel    = document.getElementById('availabilityMsg');
+  if (!panel || !aptId || !checkIn || !checkOut) { if (panel) panel.textContent = ''; return; }
+  if (new Date(checkOut) <= new Date(checkIn)) return;
+  clearTimeout(availTimer);
+  panel.textContent = '⏳ Provera dostupnosti...';
+  panel.style.color = '#999';
+  availTimer = setTimeout(async () => {
+    try {
+      const r = await fetch(`/api/reservations/availability?apartment_id=${aptId}&check_in=${checkIn}&check_out=${checkOut}`);
+      const d = await r.json();
+      if (d.available) {
+        panel.textContent = '✓ Apartman je dostupan!';
+        panel.style.color = '#2e7d32';
+      } else {
+        panel.textContent = '✗ Apartman nije dostupan za izabrane datume.';
+        panel.style.color = '#c62828';
+      }
+    } catch { panel.textContent = ''; }
+  }, 600);
+}

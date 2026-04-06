@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Zlatar Stars</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #c9a96e; --gold-light: #e0c99a; --dark: #0e0e0e; --dark2: #1a1a1a;
+    --bg: #f5f5f0; --white: #ffffff; --border: #e8e0d0;
+    --green: #2e7d32; --green-bg: #e8f5e9;
+    --red: #c62828; --red-bg: #ffebee;
+    --orange: #e65100; --orange-bg: #fff3e0;
+    --radius: 8px; --shadow: 0 4px 24px rgba(0,0,0,.08);
+  }
+  body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--dark); min-height: 100vh; }
+
+  /* ── LOGIN ── */
+  .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .login-card { background: var(--white); border-radius: var(--radius); padding: 48px 40px; width: 100%; max-width: 400px; box-shadow: var(--shadow); text-align: center; }
+  .login-logo { font-size: 20px; letter-spacing: 3px; color: var(--gold); margin-bottom: 8px; }
+  .login-title { font-size: 22px; font-weight: 400; margin-bottom: 32px; }
+  .login-input { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; font-size: 15px; margin-bottom: 16px; outline: none; transition: border-color .2s; }
+  .login-input:focus { border-color: var(--gold); }
+  .login-btn { width: 100%; background: var(--dark); color: var(--white); border: none; border-radius: 6px; padding: 14px; font-size: 15px; cursor: pointer; letter-spacing: 1px; transition: background .2s; }
+  .login-btn:hover { background: var(--gold); }
+  .login-err { color: var(--red); font-size: 13px; margin-top: 8px; min-height: 18px; }
+
+  /* ── LAYOUT ── */
+  #app { display: none; }
+  .topbar { background: var(--dark); color: var(--white); padding: 0 24px; height: 60px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .topbar-logo { color: var(--gold); font-size: 16px; letter-spacing: 2px; }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .logout-btn { background: none; border: 1px solid #444; color: #ccc; padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; transition: all .2s; }
+  .logout-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+  /* ── STATS ── */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--white); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .stat-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+  .stat-val { font-size: 32px; font-weight: 700; color: var(--dark); }
+  .stat-val.gold { color: var(--gold); }
+  .stat-val.green { color: var(--green); }
+  .stat-val.orange { color: var(--orange); }
+
+  /* ── TOOLBAR ── */
+  .toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; }
+  .filter-select, .filter-input { border: 1px solid var(--border); border-radius: 6px; padding: 8px 12px; font-size: 14px; background: var(--white); outline: none; }
+  .filter-select:focus, .filter-input:focus { border-color: var(--gold); }
+  .refresh-btn { margin-left: auto; background: var(--dark); color: var(--white); border: none; border-radius: 6px; padding: 9px 20px; font-size: 14px; cursor: pointer; transition: background .2s; }
+  .refresh-btn:hover { background: var(--gold); }
+
+  /* ── TABLE ── */
+  .table-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { background: var(--dark); color: var(--white); padding: 12px 16px; text-align: left; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; font-weight: 500; white-space: nowrap; }
+  td { padding: 14px 16px; border-bottom: 1px solid #f5f0e8; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafaf5; }
+
+  .badge { display: inline-block; border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 600; }
+  .badge-pending    { background: var(--orange-bg); color: var(--orange); }
+  .badge-confirmed  { background: var(--green-bg);  color: var(--green); }
+  .badge-cancelled  { background: #f5f5f5;          color: #888; }
+
+  .actions { display: flex; gap: 6px; }
+  .act-btn { border: none; border-radius: 4px; padding: 5px 10px; font-size: 12px; cursor: pointer; font-weight: 500; transition: opacity .2s; }
+  .act-btn:hover { opacity: .8; }
+  .btn-confirm  { background: var(--green-bg);  color: var(--green); }
+  .btn-cancel   { background: var(--red-bg);    color: var(--red); }
+  .btn-delete   { background: #f5f5f5;          color: #666; }
+
+  /* ── PAGINATION ── */
+  .pagination { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 20px; }
+  .pg-btn { border: 1px solid var(--border); background: var(--white); border-radius: 4px; padding: 6px 14px; cursor: pointer; font-size: 13px; }
+  .pg-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+  .pg-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .pg-info { font-size: 13px; color: #666; }
+
+  /* ── TOAST ── */
+  .toast { position: fixed; bottom: 24px; right: 24px; background: var(--dark); color: var(--white); padding: 14px 24px; border-radius: 6px; font-size: 14px; opacity: 0; transform: translateY(8px); transition: all .3s; z-index: 9999; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .toast.success { border-left: 3px solid var(--gold); }
+  .toast.error   { border-left: 3px solid var(--red); }
+
+  /* ── LOADING ── */
+  .loading { text-align: center; padding: 48px; color: #999; }
+  .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #e8e0d0; border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; margin-bottom: 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 768px) {
+    .main { padding: 16px; }
+    table { font-size: 12px; }
+    th, td { padding: 10px; }
+    .actions { flex-direction: column; }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <div class="login-logo">✦ ZLATAR STARS</div>
+    <div class="login-title">Admin Panel</div>
+    <input class="login-input" type="password" id="tokenInput" placeholder="Admin token" autocomplete="current-password">
+    <button class="login-btn" onclick="doLogin()">Prijavi se</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-logo">✦ ZLATAR STARS — Admin</div>
+    <div class="topbar-right">
+      <span id="topbarTime" style="font-size:13px;color:#888;"></span>
+      <button class="logout-btn" onclick="doLogout()">Odjava</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-label">Sve rezervacije</div><div class="stat-val" id="statTotal">—</div></div>
+      <div class="stat-card"><div class="stat-label">Na čekanju</div><div class="stat-val orange" id="statPending">—</div></div>
+      <div class="stat-card"><div class="stat-label">Potvrđene</div><div class="stat-val green" id="statConfirmed">—</div></div>
+      <div class="stat-card"><div class="stat-label">Trenutno aktivne</div><div class="stat-val" id="statActive">—</div></div>
+      <div class="stat-card"><div class="stat-label">Prihod (potvrđene)</div><div class="stat-val gold" id="statRevenue">—</div></div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <select class="filter-select" id="filterStatus" onchange="loadReservations(1)">
+        <option value="">Svi statusi</option>
+        <option value="pending">Na čekanju</option>
+        <option value="confirmed">Potvrđene</option>
+        <option value="cancelled">Otkazane</option>
+      </select>
+      <select class="filter-select" id="filterApt" onchange="loadReservations(1)">
+        <option value="">Svi apartmani</option>
+        <option value="sunce">Apartman 1 — Sunce</option>
+        <option value="zvezda">Apartman 2 — Zvezda</option>
+        <option value="planina">Apartman 3 — Planina</option>
+      </select>
+      <button class="refresh-btn" onclick="refresh()">↻ Osvježi</button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrap">
+      <div id="tableContent" class="loading">
+        <div class="spinner"></div><br>Učitavanje...
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = window.location.origin + '/api';
+let adminToken = '';
+let currentPage = 1;
+
+// ── Login ──────────────────────────────────────
+async function doLogin() {
+  const token = document.getElementById('tokenInput').value.trim();
+  if (!token) return;
+  try {
+    const r = await fetch(`${API}/admin/stats`, { headers: { 'x-admin-token': token } });
+    if (!r.ok) throw new Error('Pogrešan token.');
+    adminToken = token;
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    refresh();
+    startClock();
+  } catch {
+    document.getElementById('loginErr').textContent = 'Pogrešan token. Pokušajte ponovo.';
+  }
+}
+
+document.getElementById('tokenInput').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+function doLogout() {
+  adminToken = '';
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('tokenInput').value = '';
+  document.getElementById('loginErr').textContent = '';
+}
+
+// ── Clock ──────────────────────────────────────
+function startClock() {
+  const el = document.getElementById('topbarTime');
+  setInterval(() => {
+    el.textContent = new Date().toLocaleString('sr-Latn-RS', { dateStyle: 'short', timeStyle: 'short' });
+  }, 1000);
+}
+
+// ── Stats ──────────────────────────────────────
+async function loadStats() {
+  try {
+    const r = await apiFetch('/admin/stats');
+    const s = r.stats;
+    document.getElementById('statTotal').textContent     = s.total;
+    document.getElementById('statPending').textContent   = s.pending;
+    document.getElementById('statConfirmed').textContent = s.confirmed;
+    document.getElementById('statActive').textContent    = s.active_now;
+    document.getElementById('statRevenue').textContent   = '€' + s.total_revenue_eur;
+  } catch {}
+}
+
+// ── Rezervacije ────────────────────────────────
+async function loadReservations(page = 1) {
+  currentPage = page;
+  document.getElementById('tableContent').innerHTML = '<div class="loading"><div class="spinner"></div><br>Učitavanje...</div>';
+
+  const status = document.getElementById('filterStatus').value;
+  const apt    = document.getElementById('filterApt').value;
+  let url = `/admin/reservations?page=${page}&limit=20`;
+  if (status) url += '&status=' + status;
+  if (apt)    url += '&apartment_id=' + apt;
+
+  try {
+    const r = await apiFetch(url);
+    renderTable(r.data);
+    renderPagination(r.total, page, 20);
+  } catch (err) {
+    document.getElementById('tableContent').innerHTML = '<div class="loading" style="color:#c62828">Greška pri učitavanju: ' + err.message + '</div>';
+  }
+}
+
+function renderTable(rows) {
+  if (!rows || rows.length === 0) {
+    document.getElementById('tableContent').innerHTML = '<div class="loading">Nema rezervacija.</div>';
+    return;
+  }
+
+  const fmtDate = d => new Date(d).toLocaleDateString('sr-Latn-RS', { day:'2-digit', month:'2-digit', year:'numeric' });
+
+  const html = `
+    <table>
+      <thead><tr>
+        <th>Ref. kod</th><th>Gost</th><th>Apartman</th>
+        <th>Check-in</th><th>Check-out</th><th>Noći</th>
+        <th>Gostiju</th><th>Ukupno</th><th>Status</th><th>Akcije</th>
+      </tr></thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <td style="font-family:monospace;color:#c9a96e;font-weight:600;">${r.ref_code}</td>
+            <td>
+              <div style="font-weight:500;">${r.first_name} ${r.last_name}</div>
+              <div style="font-size:12px;color:#999;">${r.email}</div>
+              <div style="font-size:12px;color:#999;">${r.phone}</div>
+            </td>
+            <td>${r.apartments?.name || r.apartment_id}</td>
+            <td>${fmtDate(r.check_in)}</td>
+            <td>${fmtDate(r.check_out)}</td>
+            <td>${r.nights}</td>
+            <td>${r.guests}</td>
+            <td style="font-weight:600;">€${r.total_eur}</td>
+            <td><span class="badge badge-${r.status}">${statusLabel(r.status)}</span></td>
+            <td>
+              <div class="actions">
+                ${r.status !== 'confirmed'  ? `<button class="act-btn btn-confirm" onclick="changeStatus(${r.id}, 'confirmed')">✓ Potvrdi</button>` : ''}
+                ${r.status !== 'cancelled'  ? `<button class="act-btn btn-cancel"  onclick="changeStatus(${r.id}, 'cancelled')">✗ Otkaži</button>` : ''}
+                <button class="act-btn btn-delete" onclick="deleteRes(${r.id})">🗑</button>
+              </div>
+            </td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+
+  document.getElementById('tableContent').innerHTML = html;
+}
+
+function statusLabel(s) {
+  return { pending: 'Na čekanju', confirmed: 'Potvrđena', cancelled: 'Otkazana' }[s] || s;
+}
+
+function renderPagination(total, page, limit) {
+  const pages = Math.ceil(total / limit);
+  if (pages <= 1) { document.getElementById('pagination').innerHTML = ''; return; }
+  document.getElementById('pagination').innerHTML = `
+    <button class="pg-btn" onclick="loadReservations(${page-1})" ${page<=1?'disabled':''}>← Prethodna</button>
+    <span class="pg-info">Strana ${page} od ${pages} (${total} ukupno)</span>
+    <button class="pg-btn" onclick="loadReservations(${page+1})" ${page>=pages?'disabled':''}>Sledeća →</button>
+  `;
+}
+
+// ── Akcije ─────────────────────────────────────
+async function changeStatus(id, status) {
+  if (!confirm(`Promeniti status u "${statusLabel(status)}"?`)) return;
+  try {
+    await apiFetch(`/admin/reservations/${id}/status`, 'PATCH', { status });
+    showToast('Status uspešno promenjen.', 'success');
+    refresh();
+  } catch (err) {
+    showToast('Greška: ' + err.message, 'error');
+  }
+}
+
+async function deleteRes(id) {
+  if (!confirm('Obrisati rezervaciju? Ova akcija je nepovratna!')) return;
+  try {
+    await apiFetch(`/admin/reservations/${id}`, 'DELETE');
+    showToast('Rezervacija obrisana.', 'success');
+    refresh();
+  } catch (err) {
+    showToast('Greška: ' + err.message, 'error');
+  }
+}
+
+// ── Helpers ────────────────────────────────────
+async function apiFetch(path, method = 'GET', body = null) {
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(API + path, opts);
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'API greška');
+  return data;
+}
+
+function refresh() {
+  loadStats();
+  loadReservations(currentPage);
+}
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type + ' show';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 4000);
+}
+</script>
+</body>
+</html>

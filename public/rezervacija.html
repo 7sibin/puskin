@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="sr-Latn" prefix="og: https://ogp.me/ns#">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ══ PRIMARY SEO ══ -->
+<title>Rezervacija — Zlatar Stars | Direktna rezervacija apartmana</title>
+<meta name="description" content="Direktno rezervišite jedan od tri luksuzna apartmana na Zlataru — Apartman Sunce, Zvezda ili Planina. Garancija najbolje cene.">
+<meta name="keywords" content="rezervacija Zlatar, rezervacija apartmana, direktna rezervacija, Zlatar Stars rezervacija">
+<meta name="author" content="Zlatar Stars">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0e0e0e">
+<link rel="canonical" href="https://www.zlatarstars.rs/rezervacija.html">
+
+<!-- ══ OPEN GRAPH (Facebook, Viber, WhatsApp) ══ -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.zlatarstars.rs/rezervacija.html">
+<meta property="og:title" content="Rezervacija — Zlatar Stars Apartmani">
+<meta property="og:description" content="Direktna rezervacija luksuznih apartmana na Zlataru. Garantovano najniže cene.">
+<meta property="og:image" content="https://www.zlatarstars.rs/media/og-image.jpg">
+<meta property="og:locale" content="sr_RS">
+<meta property="og:site_name" content="Zlatar Stars">
+
+<!-- ══ TWITTER / X CARD ══ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rezervacija — Zlatar Stars">
+<meta name="twitter:description" content="Direktna rezervacija apartmana na Zlataru.">
+<meta name="twitter:image" content="https://www.zlatarstars.rs/media/og-image.jpg">
+
+<!-- ══ PRECONNECT & FONTS ══ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav id="navbar">
+<div class="nav-inner">
+<a href="index.html" class="nav-logo">
+<span class="logo-star">✦</span>
+<span>Zlatar Stars</span>
+</a>
+<ul class="nav-links">
+<li><a href="index.html#apartments">Apartmani</a></li>
+<li><a href="index.html#location">Lokacija</a></li>
+<li><a href="index.html#reviews">Recenzije</a></li>
+<li><a href="rezervacija.html" class="nav-cta">Rezerviši</a></li>
+</ul>
+<button class="nav-burger" aria-label="Meni" id="navBurger">
+<span></span><span></span><span></span>
+</button>
+</div>
+</nav>
+
+<!-- ══════════════ RESERVATION: EDITORIAL MOUNTAIN LUXURY ══════════════ -->
+<section class="reservation-section" id="reservation">
+
+<div class="reservation-hero">
+<div class="atmospheric-orbs">
+<div class="orb-wrapper orb-1"><div class="orb"></div></div>
+<div class="orb-wrapper orb-2"><div class="orb"></div></div>
+<div class="orb-wrapper orb-3"><div class="orb"></div></div>
+</div>
+<div class="grain-overlay"></div>
+<div class="container">
+<div class="reservation-intro">
+<span class="reservation-label">Direktna rezervacija</span>
+<h2 class="reservation-title">
+<span class="title-main">Rezerviši</span>
+<span class="title-accent">svoj boravak</span>
+</h2>
+<p class="reservation-subtitle">Garantovano najbolje cene za direktne rezervacije</p>
+</div>
+</div>
+</div>
+
+<div class="form-container">
+<div class="container">
+<div class="form-layout">
+
+<form class="reservation-form" id="reservationForm" novalidate>
+<div class="form-main">
+
+<div class="field-row">
+<div class="field-group field-date">
+<label class="field-label">Datum dolaska</label>
+<div class="field-wrapper">
+<input type="date" id="checkIn" name="checkIn" required>
+<span class="field-focus-bg"></span>
+</div>
+</div>
+
+<div class="field-group field-date">
+<label class="field-label">Datum odlaska</label>
+<div class="field-wrapper">
+<input type="date" id="checkOut" name="checkOut" required>
+<span class="field-focus-bg"></span>
+</div>
+</div>
+</div>
+
+<div class="field-row">
+<div class="field-group field-select">
+<label class="field-label">Izaberite apartman</label>
+<div class="field-wrapper">
+<select id="apartment" name="apartment" required>
+<option value="">— Izaberite —</option>
+<option value="sunce" data-price="120">Apartman 1 (5 gosta) — €120/noć</option>
+<option value="zvezda" data-price="90">Apartman 2 (4 gosta) — €90/noć</option>
+<option value="planina" data-price="150">Apartman 3 (3 gosta) — €150/noć</option>
+</select>
+<span class="field-focus-bg"></span>
+</div>
+</div>
+
+<div class="field-group field-select">
+<label class="field-label">Broj gostiju</label>
+<div class="field-wrapper">
+<select id="guests" name="guests" required>
+<option value="">— Izaberite —</option>
+<option value="1">1 gost</option>
+<option value="2">2 gosta</option>
+<option value="3">3 gosta</option>
+<option value="4">4 gosta</option>
+<option value="5">5 gostiju</option>
+</select>
+<span class="field-focus-bg"></span>
+</div>
+</div>
+</div>
+
+<div class="field-row">
+<div class="field-group field-text">
+<label class="field-label">Ime</label>
+<div class="field-wrapper">
+<input type="text" id="firstName" name="firstName" placeholder="Vaše ime" required>
+<span class="field-focus-bg"></span>
+<span class="field-valid-icon">✓</span>
+</div>
+</div>
+
+<div class="field-group field-text">
+<label class="field-label">Prezime</label>
+<div class="field-wrapper">
+<input type="text" id="lastName" name="lastName" placeholder="Vaše prezime" required>
+<span class="field-focus-bg"></span>
+<span class="field-valid-icon">✓</span>
+</div>
+</div>
+</div>
+
+<div class="field-row">
+<div class="field-group field-email">
+<label class="field-label">Email adresa</label>
+<div class="field-wrapper">
+<input type="email" id="email" name="email" placeholder="vas@email.com" required>
+<span class="field-focus-bg"></span>
+<span class="field-valid-icon">✓</span>
+</div>
+</div>
+
+<div class="field-group field-phone">
+<label class="field-label">Telefon</label>
+<div class="field-wrapper">
+<input type="tel" id="phone" name="phone" placeholder="+381 xx xxx xxxx" required>
+<span class="field-focus-bg"></span>
+</div>
+</div>
+</div>
+
+<div class="field-row field-full">
+<div class="field-group field-textarea">
+<label class="field-label">Posebni zahtevi <span class="optional">(opciono)</span></label>
+<div class="field-wrapper">
+<span class="field-icon textarea-icon">✏</span>
+<textarea id="specialRequests" name="specialRequests" rows="3" placeholder="Doručak, transfer, dodatni ležaj, vreme dolaska, itd."></textarea>
+<span class="field-focus-bg"></span>
+</div>
+</div>
+</div>
+
+</div>
+</form>
+
+<aside class="price-panel">
+<div class="price-card">
+<div class="price-header">
+<h4 class="price-title">Detalji cene</h4>
+</div>
+<div class="price-rows">
+<div class="price-row">
+<span class="price-label">Broj noći</span>
+<span class="price-value" id="nightCount">—</span>
+</div>
+<div class="price-row">
+<span class="price-label">Cena po noći</span>
+<span class="price-value" id="pricePerNight">—</span>
+</div>
+<div class="price-row-divider"></div>
+<div class="price-row total">
+<span class="price-label">Ukupno</span>
+<span class="price-value" id="totalPrice">—</span>
+</div>
+</div>
+<div class="price-guarantee">
+<span class="guarantee-icon">✓</span>
+<span>Najniža cena garantovana</span>
+</div>
+</div>
+</aside>
+
+</div>
+
+<div class="form-submit">
+<div class="submit-wrapper">
+<div class="privacy-notice">
+<span class="privacy-icon">🔒</span>
+<p>Vaši podaci su šifrirani i zaštićeni. Koristimo ih isključivo za obradu vaše rezervacije.</p>
+</div>
+<button type="submit" form="reservationForm" class="submit-button" id="submitButton">
+<span class="button-text">Potvrdi rezervaciju</span>
+<span class="button-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+</button>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+
+</section>
+
+<!-- ══════════════ FAQ SEKCIJA ══════════════ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <header class="faq-header">
+      <span class="faq-eyebrow">Česta pitanja</span>
+      <h2 class="faq-title">Sve što vas <em>zanima</em></h2>
+      <p class="faq-subtitle">Brzi odgovori na najčešća pitanja o rezervaciji i boravku</p>
+    </header>
+
+    <div class="faq-container">
+      <div class="faq-item" data-reveal-delay="0">
+        <button class="faq-question" aria-expanded="false">
+          <span class="faq-q-text">Koje je vreme za prijavu i odjavu?</span>
+          <span class="faq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Standardna prijava (check-in) je od 15:00, a odjava (check-out) do 12:00. Ukoliko vam je potrebno drugačije vreme, molimo kontaktirajte nas unapred — trudićemo se da vam izađemo u susret.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-reveal-delay="80">
+        <button class="faq-question" aria-expanded="false">
+          <span class="faq-q-text">Da li se može otkazati rezervacija?</span>
+          <span class="faq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Rezervaciju možete otkazati najmanje 7 dana pre dolaska bez naknade. Za otaze u roku od 7 dana zadržavamo pravo na naplatu 50% ukupnog iznosa. Posebni uslovi važe za grupne rezervacije i praznične dane.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-reveal-delay="160">
+        <button class="faq-question" aria-expanded="false">
+          <span class="faq-q-text">Da li je doručak uključen u cenu?</span>
+          <span class="faq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Doručak nije uključen u osnovnu cenu, ali može se organizati po ceni od €10 po osobi po danu. Svaki apartman ima potpuno opremljenu kuhinju gde možete pripremati obroke po vlastitoj želji.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-reveal-delay="240">
+        <button class="faq-question" aria-expanded="false">
+          <span class="faq-q-text">Da li dozvoljavate kućne ljubimce?</span>
+          <span class="faq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Životinje nisu dozvoljene u apartmanima. Ispravljeno: Kućni ljubimci su dozvoljeni sa prethodnom najavom i dodatnom naknadom od €20 po boravku. Molimo da napomenete vrstu i veličinu ljubimca prilikom rezervacije.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-reveal-delay="320">
+        <button class="faq-question" aria-expanded="false">
+          <span class="faq-q-text">Kako mogu platiti rezervaciju?</span>
+          <span class="faq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Plaćanje se vrši prilikom prijave na recepciji (cash ili kartica). Za boravke duže od 7 noći, tražimo avans od 30% koji se ne povraćava. Svi prikazani cenovnici su u evrima.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item" data-reveal-delay="400">
+        <button class="faq-question" aria-expanded="false">
+          <span class="faq-q-text">Da li ima Wi-Fi u apartmanima?</span>
+          <span class="faq-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </span>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            <p>Jesmo! Besplatan brzi optic internet je dostupan u svim apartmanima i zajedničkim prostorijama. Brzina je do 100 Mbps, idealno za remote rad ili streaming.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ LUXURY GALLERY ══════════════ -->
+<section class="luxury-gallery-section" id="gallery">
+<div class="container">
+<header class="gallery-header">
+<span class="gallery-eyebrow">Inspiracija</span>
+<h2 class="gallery-title">Planinski <em>mir</em></h2>
+<p class="gallery-subtitle">Pogledajte našu galeriju i zamislite svoj savršen odmor</p>
+</header>
+<div class="gallery-grid" id="luxuryGallery">
+<!-- JavaScript će generisati galeriju -->
+</div>
+</div>
+</section>
+
+<!-- ══════════════ LIGHTBOX ══════════════ -->
+<div id="zsLightbox" class="zs-lightbox" role="dialog" aria-modal="true" aria-label="Galerija slika">
+    <button class="lb-close" id="lbClose" aria-label="Zatvori galeriju">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Prethodna slika">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Sledeća slika">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="lb-image-wrap">
+      <img id="lbImg" src="" alt="" class="lb-img">
+      <div class="lb-loader" id="lbLoader"></div>
+    </div>
+    <div class="lb-footer">
+      <span class="lb-counter" id="lbCounter">1 / 4</span>
+      <div class="lb-dots" id="lbDots"></div>
+    </div>
+  </div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-content">
+      <!-- Column 1: About -->
+      <div class="footer-column">
+        <h3 class="footer-heading">O Nama</h3>
+        <p class="footer-about">Zlatar Stars nudi luksuzne apartmane na planini Zlatar, savršene za odmor i relaksaciju. Doživite prirodu sa svim udobnostima modernog života.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/zlatarstars/?hl=en" target="_blank" aria-label="Instagram"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="instagram-icon">
+  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+</svg>
+</a>
+          <a href="https://www.facebook.com/profile.php?id=61576467116702" target="_blank" aria-label="Facebook"><!-- Facebook Icon Inline SVG -->
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+</svg>
+</a>
+          <a href="https://www.tiktok.com/@zlatar.stars" target="_blank" aria-label="TikTok">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 448 512" fill="currentColor">
+  <path d="M448 209.9a210.1 210.1 0 0 1-122.8-39.3V349.4A162.6 162.6 0 1 1 185 188.3V278.2a74.6 74.6 0 1 0 52.2 71.2V0l88 0a121.2 121.2 0 0 0 122.8 122.9V209.9z"/>
+</svg>
+</a>
+        </div>
+      </div>
+      <!-- Column 2: Quick Links -->
+      <div class="footer-column">
+        <h3 class="footer-heading">Brzi Linkovi</h3>
+        <ul class="footer-links">
+          <li><a href="index.html#apartments">Apartmani</a></li>
+          <li><a href="index.html#location">Lokacija</a></li>
+          <li><a href="index.html#reviews">Recenzije</a></li>
+          <li><a href="rezervacija.html">Rezervacija</a></li>
+        </ul>
+      </div>
+      <!-- Column 3: Contact -->
+      <div class="footer-column">
+        <h3 class="footer-heading">Kontakt</h3>
+        <div class="footer-contact">
+          <p><i class="fas fa-map-marker-alt"></i> Zlatar, Srbija</p>
+          <p><i class="fas fa-phone"></i> +381 64 249 8980</p>
+        </div>
+      </div>
+        <!-- Column 4: Booking -->
+        <div class="footer-column">
+          <h3 class="footer-heading">Rezervacije</h3>
+          <p class="footer-booking-text">Garancija najbolje cene i sigurnih rezervacija. Brzo potvrđivanje i fleksibilni uslovi otkazivanja.</p>
+          <div class="footer-booking-cta">
+            <a href="rezervacija.html" class="booking-btn">Rezerviši odmah</a>
+          </div>
+          <div class="footer-contact-small">
+            <p><i class="fas fa-calendar-check"></i> Rano odjavljivanje: 12:00</p>
+            <p><i class="fas fa-clock"></i> Kasno prijavljivanje: po dogovoru</p>
+          </div>
+        </div>    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2025 Zlatar Stars · Sva prava zadržana</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
+<!-- Mobile nav toggle -->
+<script>
+const burger = document.getElementById('navBurger');
+const nav = document.getElementById('navbar');
+if (burger) {
+burger.addEventListener('click', () => {
+nav.classList.toggle('nav-open');
+burger.classList.toggle('open');
+});
+}
+</script>
+
+<!-- ═══════════ FIXED CALL BUTTON ═══════════ -->
+<a href="tel:+381642498980" class="fixed-call-button" aria-label="Pozovite nas +381 64 249 8980">
+<i class="fas fa-phone"></i>
+</a>
+</body>
+</html>

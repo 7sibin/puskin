@@ -46,7 +46,9 @@
       "Bash(sed -i '627r footer-new.html' index.html)",
       "Bash(rm:*)",
       "Bash(sed -i \"628,714d\" index.html)",
-      "Bash(sed -i \"627r new-footer-temp.html\" index.html)"
+      "Bash(sed -i \"627r new-footer-temp.html\" index.html)",
+      "Bash([ -f \"E:\\\\Work\\\\1. Zlatar Stars\\\\ZlatarStars\\\\ja se nadam da je zadnja\\\\script.js\" ])",
+      "Bash(awk NR>=60 && NR<=90:*)"
     ]
   }
 }
